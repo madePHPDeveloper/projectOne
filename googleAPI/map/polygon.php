@@ -17,12 +17,15 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFvi7WI-u6vUr4Zr4xjA6Wi_PM2Xv7crE&libraries=drawing,geometry&callback=setMapPolygon" async defer></script> 
   <script type="text/javascript">
     var map;
-    var activeBoundary = [
-      {lat: 25.774, lng: -80.190},
-      {lat: 18.466, lng: -66.118},
-      {lat: 32.321, lng: -64.757},
-      {lat: 25.774, lng: -80.190}
-    ];
+    var activeBoundary = {
+      coordinates : [
+        {lat: 25.774, lng: -80.190},
+        {lat: 18.466, lng: -66.118},
+        {lat: 32.321, lng: -64.757},
+        {lat: 25.774, lng: -80.190}
+        ],
+    };
+    
   	var drawingManager;
   	var activePolygon;
   	var activeSelection;
@@ -43,12 +46,10 @@
       // Pre Defined Active Boundary
       if (activeBoundary) {
         if (activeBoundary.coordinates) {
-          activePolygon = new google.maps.Polygon(polyOptions[activeBoundary.type]);
+          activePolygon = new google.maps.Polygon(polyOptions);
           activePolygon.setPaths(activeBoundary.coordinates);
           activePolygon.setMap(map);
-          activePolygon.destination_id = activeBoundary.destination_id;
-          activePolygon.setEditable(true);
-          activeSelection = activePolygon;
+          setActivePolygon(activePolygon);
           
           google.maps.event.addListener(activePolygon, 'click', function(){
             setActivePolygon(activePolygon);
@@ -63,7 +64,7 @@
           position: google.maps.ControlPosition.TOP_CENTER,
           drawingModes: [google.maps.drawing.OverlayType.POLYGON,]
         },
-        polygonOptions: polyOptions.new_selection,
+        polygonOptions: polyOptions,
         map:map
       });
       
@@ -76,22 +77,22 @@
     }
     
     function setActivePolygon(polygon){
-  		deactivePolygon();
-  		polygon.setEditable(true);
-  		activeSelection = polygon;
-  	}
-  	
-  	function deactivePolygon(){
-  		if (othersPolygon.length) {
-  			othersPolygon.forEach(function(oPolygon, index){
-  				oPolygon.setEditable(false);
-  			});
-  		}
-  		
-  		if (typeof activeSelection !== 'undefined' && activeSelection.setEditable) {
-  			activeSelection.setEditable(false);
-  		}
-  	}
+      deactivePolygon();
+      polygon.setEditable(true);
+      activeSelection = polygon;
+    }
+    
+    function deactivePolygon(){
+      if (typeof othersPolygon !== 'undefined') {
+        othersPolygon.forEach(function(oPolygon, index){
+          oPolygon.setEditable(false);
+        });
+      }
+      
+      if (typeof activeSelection !== 'undefined' && activeSelection.setEditable) {
+        activeSelection.setEditable(false);
+      }
+    }
   </script>
 </body>
 </html>
