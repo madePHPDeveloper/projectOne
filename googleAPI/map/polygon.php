@@ -40,21 +40,21 @@
         center: {lat: 24.886, lng: -70.268}
       });
       
-      // Pre Defined Active Boundary 
-  		if (activeBoundary) {			
-  			if (activeBoundary.coordinates) {
-  				activePolygon = new google.maps.Polygon(polyOptions[activeBoundary.type]);
-  				activePolygon.setPaths(activeBoundary.coordinates);
-  				activePolygon.setMap(map);
-  				activePolygon.destination_id = activeBoundary.destination_id;
-  				activePolygon.setEditable(true);
-  				activeSelection = activePolygon;
-  				
-  				google.maps.event.addListener(activePolygon, 'click', function(){
-  					setActivePolygon(activePolygon);
-  				});
-  			}
-  		}
+      // Pre Defined Active Boundary
+      if (activeBoundary) {
+        if (activeBoundary.coordinates) {
+          activePolygon = new google.maps.Polygon(polyOptions[activeBoundary.type]);
+          activePolygon.setPaths(activeBoundary.coordinates);
+          activePolygon.setMap(map);
+          activePolygon.destination_id = activeBoundary.destination_id;
+          activePolygon.setEditable(true);
+          activeSelection = activePolygon;
+          
+          google.maps.event.addListener(activePolygon, 'click', function(){
+            setActivePolygon(activePolygon);
+          });
+        }
+      }
   		
   		// Drawing tools
       drawingManager = new google.maps.drawing.DrawingManager({
